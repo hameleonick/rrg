@@ -1,0 +1,3 @@
+export const SOUND_TOGGLE = 'ADD_TODO'
+export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE'
+export const FAST_MODE_TOGGLE = 'FAST_MODE_TOGGLE'
