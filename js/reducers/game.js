@@ -1,219 +1,103 @@
 import {GameModel} from "../store/gameModel"
 import {GET_NEXT_TEXT, GET_ACTION_BUTTONS, CHANGE_CURRENT_STATE} from '../constants/game'
+import _ from "lodash"
+import Immutable from "Immutable"
 
 export default function game(state = {}, action) { 
 	switch (action.type) {
  		case GET_NEXT_TEXT:
- 			var result = updateTextState(action.value, state); 		
-			var newState = Object.assign({},state,{
- 				gameFlows:result.gameFlows,
- 				waitingForAction:result.waitingForAction,
- 				data:result.data,
- 				currentGameState:{area:action.value.area,step:action.value.step, action: action.value.action}
- 			});
-
- 			// console.log(newState)
- 			return newState
+ 			return updateTextState(action.value, state); 		
  		case GET_ACTION_BUTTONS:
- 			var result = updateActionState(action.value, state);
-			var newState = Object.assign({},state,{
- 				waitingForAction:result.waitingForAction,
- 				data:result.data,
- 				currentGameState:{area:action.value.area,step:action.value.step, action: action.value.action}
- 			});
- 			return newState;
-
+ 			return updateActionState(action.value, state);
  		case CHANGE_CURRENT_STATE:	
- 			return Object.assign({},state,{
- 				data: changeCurrentGameState(state),
- 				currentGameState:{area:action.value.area,step:action.value.step, action: action.value.action}
- 			})
+ 			return changeCurrentGameState(action.value, state);
 	    default:
 	      return state;//Object.assign({},state);
   	}
 }
 
-function changeCurrentGameState(state){
+function changeCurrentGameState(actionData,state){
 
-	let data = state.data.slice(0);
-	console.log(data[data.length-1])
-	for(let i=0; i < data[data.length-1].value.length ;i++)
-	{
-		data[data.length-1].value[i].disabled = true;	
-	}
 
-	return data;
+
+	let nextState = state.withMutations((state) => {
+	
+		state.setIn(['currentGameState','area'],actionData.get("area"));
+		state.setIn(['currentGameState','step'],actionData.get("step"));
+		state.setIn(['currentGameState','action'],actionData.get("action"));
+
+		let data = state.get("data").toJS();
+		for(let i=0; i < data[data.length-1].value.length ;i++)
+		{
+			data[data.length-1].value[i].disabled = true;	
+		}
+		state.set("data", Immutable.fromJS(data));
+	});
+
+	return nextState;
 
 }
 
 function updateTextState(actionData, state){
 
-
-	if(!actionData || isNaN(actionData.area) || isNaN(actionData.step) || isNaN(actionData.action)){
-		return {};
+	if(!actionData || isNaN(actionData.get("area")) || isNaN(actionData.get("step")) || isNaN(actionData.get("action"))){
+		return state;
 	}
 
-	const {area, step, action} = actionData;
+	const area = actionData.get("area"), 
+		  step= actionData.get("step"), 
+		  action = actionData.get("action"),
+		  areaStep = area+"_"+step;
+	const immutableGameModel = _.extend({},GameModel.gameFlows["area_"+area]["scene_"+step][action]);
 
-	const immutableGameModel = Object.assign({},GameModel.gameFlows["area_"+area]["scene_"+step][action]);
+	let nextState = state.withMutations((state) => {
+	  	if(!state.get("gameFlows").get(areaStep))
+			state.setIn(["gameFlows",areaStep],Immutable.fromJS({textLength:0,possibleAction:action}));
 
-	let nextState = Object.assign({},state); 
-	let gameFlows = nextState.gameFlows//[area+"_"+step];
-	if(!gameFlows[area+"_"+step])
-		gameFlows[area+"_"+step] = {textLength:0,possibleAction:action};
+		state.set("waitingForAction", false);
+		let textLength = state.getIn(["gameFlows",areaStep,"textLength"]);
+		if(textLength != immutableGameModel.text.length){
+			state.setIn(["gameFlows",areaStep, 'textLength'], textLength+1); 
+			state.updateIn(["data"], data=>data.push(Immutable.fromJS({type:"text", value: immutableGameModel.text[textLength]})));	
+			
+		}
+		else{
+			state.set("waitingForAction", true);
+			state.setIn(["gameFlows",areaStep, 'textLength'], 0); 
+			state.setIn(["gameFlows",areaStep, 'possibleAction'], action); 
+		}
 
-	// console.log(step+" + "+action)
-	let data = nextState.data.slice(0);
-	let waitingForAction = false;
+		return state;
+	});
 
-	if(gameFlows[area+"_"+step].textLength != immutableGameModel.text.length){
-		data.push({type:"text", value: immutableGameModel.text[gameFlows[area+"_"+step].textLength]});
-		gameFlows[area+"_"+step].textLength++;
-	}
-	else{
-		waitingForAction = true;
-		gameFlows[area+"_"+step].textLength = 0;
-		gameFlows[area+"_"+step].possibleAction = action;
-	}
-
-	// nextState.gameFlows.push({area, step, action});//[area][step][action] = {};
-	console.log(nextState)
-	return {waitingForAction, data, gameFlows};
+	return nextState;
 
 }
 
 function updateActionState(actionData, state){
 
-	const {area, step, action} = actionData;
-	const immutableGameModel = Object.assign({},GameModel.gameFlows["area_"+area]["scene_"+step][action]);
-	let nextState = Object.assign({},state); 
-	let data = nextState.data.slice(0);
+	const area = actionData.get("area"), 
+		  step= actionData.get("step"), 
+		  action = actionData.get("action"),
+		  areaStep = area+"_"+step;
+	const immutableGameModel = _.extend({},GameModel.gameFlows["area_"+area]["scene_"+step][action]);
 
+	let actions = immutableGameModel.actions;
 	if(immutableGameModel.actions[0].moveToScene)
 	{	
-		let actions = [];
-		// console.log(nextState)
+		actions = [];
 		for(let i=0;i<immutableGameModel.actions.length;i++){
 			let moveToScene = immutableGameModel.actions[i].moveToScene
-			let possibleAction = nextState.gameFlows[area+"_"+moveToScene] ? nextState.gameFlows[area+"_"+moveToScene].possibleAction : 0;
-			// console.log(area+" - "+moveToScene+" - "+possibleAction)
-			actions.push(Object.assign({},GameModel.gameFlows["area_"+area]["scene_"+moveToScene][possibleAction].actions[0]));
+			let possibleAction = state.get("gameFlows").get(area+"_"+moveToScene) ? state.getIn(["gameFlows",area+"_"+moveToScene,"possibleAction"]) : 0;
+			actions.push(GameModel.gameFlows["area_"+area]["scene_"+moveToScene][possibleAction].actions[0]);
 		}
-		data.push({type:"action", value: actions});
 	}
-	else{
-		
-			data.push({type:"action", value: immutableGameModel.actions});
-		
-	}
-	let waitingForAction = false;
-	return {data, waitingForAction};
-}
-
-function getCurrentGameStateOld2(value, data, gameFlows, currentGameState){
-	if(!value || isNaN(value.area) || isNaN(value.step))
-		return {};
-
-	const {area, step, buttonId} = value;
 	
-	let immutableGameModel = Object.assign({},GameModel.gameFlows["area_"+area][step]);
-	
-	if(!gameFlows[area+"_"+step])
-	{
-		gameFlows[area+"_"+step] = {textLength:0, completed:false, buttons:[], backToStep:false};
-	}
-	else if(gameFlows[area+"_"+step].completed)
-	{
+	let nextState = state.withMutations((state) => {
+		state.set("waitingForAction", false);
+		state.updateIn(["data"], data=>data.push(Immutable.fromJS({type:"action", value: actions})));	
+	});
 
-		// moveToCompletedStep = true;
-		// let preaviusGameFlow = Object.assign({},GameModel.gameFlows["area_"+currentGameState.area][currentGameState.step]);
-		gameFlows[area+"_"+step].textLength = 0;
-		gameFlows[area+"_"+step].completed = false;
-		// gameFlows[area+"_"+step].backToStep = true;
-
-		// if(!gameFlows[area+"_"+step].buttons)
-		// {
-		// 	let tmp = {}
-		// 	gameFlows[area+"_"+step].buttons.push;	
-		// }
-		// console.log()
-		// gameFlows[area+"_"+step].buttons[buttonId] = preaviusGameFlow.actions[buttonId];
-
-	}
-
-	let nextFlow = gameFlows[area+"_"+step];
-	let waitingForAction = true;
-	if(!isNaN(buttonId)){
-		nextFlow.buttons.push({buttonId:buttonId, area:currentGameState.area, step: currentGameState.step})
-	}
-
-	if(nextFlow.textLength != immutableGameModel.text.length){
-		data.push({type:"text", value: immutableGameModel.text[nextFlow.textLength]});
-		nextFlow.textLength++;
-		waitingForAction = false;
-	}
-	else{
-		let actionsTemp=[];
-
-
-		actionsTemp.push({value:immutableGameModel.actions[0].value, text:immutableGameModel.actions[0].text});
-		if(immutableGameModel.actions[1])
-			actionsTemp.push({value:immutableGameModel.actions[1].value, text:immutableGameModel.actions[1].text});
-		nextFlow.completed = true;
-		if(nextFlow.backToStep){
-			let buttonsTemp = nextFlow.buttons[nextFlow.buttons.length-1];
-			let preaviusGameFlow = Object.assign({},GameModel.gameFlows["area_"+buttonsTemp.area][buttonsTemp.step]);
-			console.log(123)
-			console.log(preaviusGameFlow)
-			var prevButId = buttonsTemp.buttonId
-			if(buttonsTemp.buttonId<0)
-				buttonsTemp.buttonId = 1
-			else
-				buttonsTemp.buttonId = 0;
-
-
-			actionsTemp[prevButId] = {value:preaviusGameFlow.actions[buttonsTemp.buttonId].value, text:preaviusGameFlow.actions[buttonsTemp.buttonId].text}
-			// immutableGameModel.actions[prevButId].value = preaviusGameFlow.actions[buttonsTemp.buttonId].value;
-			// immutableGameModel.actions[prevButId].text = preaviusGameFlow.actions[buttonsTemp.buttonId].text;
-			nextFlow.backToStep = false
-		}
-
-		// for(let k in gameFlows[area+"_"+step].buttons){
-		// 	// alert("ok")
-		// 	console.log(1112222)
-		// 	console.log(gameFlows[area+"_"+step].buttons)
-		// 	console.log(gameFlows[area+"_"+step].buttons[k])
-		// 	immutableGameModel.actions[k] = gameFlows[area+"_"+step].buttons[k];
-		// }
-
-		// if(gameFlows[area+"_"+step].buttons){
-		// 	console.log("-0000000000")
-		// 	// console.log(preaviusGameFlow)
-		// 	immutableGameModel.actions[0].value = gameFlows[area+"_"+step].preaviusGameFlow.actions[0].value;
-		// 	immutableGameModel.actions[0].text = gameFlows[area+"_"+step].preaviusGameFlow.actions[0].text;	
-		// }
-		
-
-		// for(let i=0;i<immutableGameModel.actions.length;i++)
-		// {
-		// 	if(immutableGameModel.actions[i].ifCompleteValue && gameFlows[immutableGameModel.actions[i].value.join("_")] && gameFlows[immutableGameModel.actions[i].value.join("_")].completed)
-		// 	{
-		// 		immutableGameModel.actions[i].value = immutableGameModel.actions[i].ifCompleteValue;
-		// 		immutableGameModel.actions[i].text = immutableGameModel.actions[i].ifCompleteText;	
-		// 	}
-
-		// }
-		
-		data.push({type:"action", value: actionsTemp});
-	}
-
-	return {gameFlows, data, waitingForAction};
-
+	return nextState;
 }
 
-
-
-
-function getActualAction(){
-
-}

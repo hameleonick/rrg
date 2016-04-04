@@ -6,6 +6,7 @@ import * as GameConstants from '../constants/game'
 import {StringLocalisation} from '../helpers'
 import GameMessage from "../components/gameMessage"
 import ActionButtons from "../components/actionButtons"
+import Immutable from "Immutable"
 
 class Game extends Component {
 
@@ -15,6 +16,7 @@ class Game extends Component {
 	}
 
 	componentWillMount() {
+
 		this.showMessageTillNewAction(true);
 	}
 
@@ -23,15 +25,13 @@ class Game extends Component {
 		 // this.showMessageTillNewAction();
 	}
 
-	componentWillReceiveProps() {
+	componentWillReceiveProps(nextProps) {
 
 	}
 
 	doAction(value){
 		let {actions, defaultTextDelay} = this.props;
-		actions.ChangeCurrentState({area:value[0], step:value[1], action:value[2]});		
-		// actions.GetNextText({area:value[0], step:value[1], action:value[2]});
-		// console.log(value);
+		actions.ChangeCurrentState(Immutable.fromJS({area:value.get(0), step:value.get(1), action:value.get(2)}));		
 		this.showMessageTillNewAction();
 	}
 
@@ -55,12 +55,7 @@ class Game extends Component {
 
 	render(){
 
-		// this.state = this.props;
 		const {data,waitingForAction,lang} = this.props;
-
-		// if(!data.length)
-		// 	return false;
-		
 
 		let btn = null;
 		if(waitingForAction){
@@ -70,11 +65,12 @@ class Game extends Component {
 		return (
 				<div>
 					{data.map((object, id)=>{
-						if(object.type == "text"){
-							return <GameMessage lang={lang} key={id} text={object.value} />
+						if(object.get("type") == "text"){
+							return <GameMessage lang={lang} key={id} text={object.get("value")} />
 						}
-						else
-							return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.value} />
+						else{
+							return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.get("value")} />
+						}
 					})}
 									
 				</div>
@@ -91,13 +87,13 @@ Game.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-  	gameFlows: state.game.gameFlows,
-  	currentGameState: state.game.currentGameState,
-  	defaultTextDelay: state.game.defaultTextDelay,
-  	fastModeTextDelay: state.game.fastModeTextDelay,
-  	data: state.game.data,
-  	waitingForAction: state.game.waitingForAction,
-  	lang: state.options.currentLanguage
+  	// gameFlows: state.getIn(['game','gameFlows']),
+  	currentGameState: state.getIn(['game','currentGameState']),
+  	defaultTextDelay: state.getIn(['game','defaultTextDelay']),
+  	fastModeTextDelay: state.getIn(['game','fastModeTextDelay']),
+  	data: state.getIn(['game','data']),
+  	waitingForAction: state.getIn(['game','waitingForAction']),
+  	lang: state.getIn(['options','currentLanguage'])
   }
 }
 

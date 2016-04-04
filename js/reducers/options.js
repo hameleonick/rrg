@@ -5,18 +5,11 @@ export default function options(state = {}, action) {
 
   switch (action.type) {
   	case SOUND_TOGGLE:
-  		return Object.assign({}, state,{
-  			sound: action.value
-  		})
+  		return state.set("sound", action.value);
   	case CHANGE_LANGUAGE:
-    
-  		return Object.assign({}, state,{
-  			currentLanguage: action.value
-  		})
+      return state.set("currentLanguage", action.value);
   	case FAST_MODE_TOGGLE:	
-  		return Object.assign({}, state,{
-  			fastMode: action.value
-  		})
+      return state.set("fastMode", action.value);
     default:
       return state;
   }

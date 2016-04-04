@@ -1,4 +1,7 @@
-export const initialState = {
+import Immutable from "Immutable"
+
+
+export const initialState = Immutable.fromJS({
 	options:{
 		sound: false,
 		currentLanguage: "EN",
@@ -28,7 +31,7 @@ export const initialState = {
 			// }
 		}
 	}
-}
+});
 
 	// texts:[],
 	// 	actions:[],

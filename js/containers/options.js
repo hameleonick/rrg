@@ -48,15 +48,15 @@ Options.propTypes = {
   sound: PropTypes.bool,
   fastMode: PropTypes.bool,
   lang: PropTypes.string,
-  languagesList: PropTypes.array
+  languagesList: PropTypes.object
 }
 
 function mapStateToProps(state, ownProps) {
   return {
-    sound: state.options.sound,
-    fastMode: state.options.fastMode,
-    lang: state.options.currentLanguage,
-    languagesList: state.options.languagesList
+    sound: state.getIn(['options', 'sound']),
+    fastMode: state.getIn(['options', 'fastMode']),
+    lang: state.getIn(['options','currentLanguage']),
+    languagesList: state.getIn(['options', 'languagesList'])
   }
 }
 

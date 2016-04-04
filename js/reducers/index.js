@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux'
+// import { combineReducers } from 'redux'
+import { combineReducers } from 'redux-immutablejs';
 import options from './options'
 import pages from './pages'
 import mode from './mode'

@@ -11,7 +11,7 @@ const store = configureStore(initialState)
 
 render(
   <Provider store={store}>
-    <App currentPage={store.currentPage}/>
+    <App/>
   </Provider>,
   document.getElementById('root')
 )

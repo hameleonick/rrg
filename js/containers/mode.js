@@ -15,7 +15,7 @@ class Mode extends Component {
 
 	render(){
 
-		const {newGame, continueGame, options, pagesActions, lang} =  this.props;
+		const {pagesActions, lang} =  this.props;
 		
 		return (
 			<div>
@@ -36,7 +36,7 @@ Mode.propTypes = {
 function mapStateToProps(state, ownProps) {
 
   return {
-    lang: state.options.currentLanguage
+    lang: state.getIn(['options','currentLanguage'])
   }
 }
 
