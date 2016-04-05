@@ -1,5 +1,5 @@
 const EN = {
-
+	"GAME_LOGO": "Game Logo",
 	"NEW_GAME": "New Game",
 	"OPTIONS": "Options",
 	"PAGE_DOES_NOT_EXIST": "Page does not exist",

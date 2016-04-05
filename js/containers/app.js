@@ -25,12 +25,12 @@ class App extends Component {
 
 	render(){
 		const {currentPage, showOptionSection} = this.props;
-		
+
 		const opt = showOptionSection ? <Options /> : null
 
 		return (
 
-				<div>
+				<div className="wrapper">
 					{this.returnCurrentPage()}
 					{opt}
 				  </div>

@@ -19,7 +19,7 @@ class Options extends Component {
 		const {sound, fastMode, actions, pagesActions, lang, languagesList} = this.props;
 
 		return (
-				<ul>
+				<ul className="options_wrapper">
 					<li><input type="checkbox" checked={sound}  onChange={()=>actions.ToggleSound(!sound)} />{StringLocalisation('SOUND', lang)}</li>
 					<li><input type="checkbox" checked={fastMode} onChange={()=>actions.ToggleFastMode(!fastMode)} />{StringLocalisation('FAST_MODE', lang)}</li>
 					<li>{StringLocalisation('CHOOSE_LANGUAGE', lang)}
@@ -31,7 +31,6 @@ class Options extends Component {
 								}
        						    return <li key={id}><input type="radio" checked={checked} onChange={()=>{actions.ChangeLanguage(language)}} name="language" value="language" />{language}</li>
         					})}
-							
 						</ul>
 					</li>
 					<li><input type="button" value={StringLocalisation('BACK', lang)} onClick={()=>   pagesActions.ChangeCurrentPage(PagesConstants.MODE_PAGE) } /></li>

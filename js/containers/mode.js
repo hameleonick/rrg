@@ -18,10 +18,11 @@ class Mode extends Component {
 		const {pagesActions, lang, showOptionSection} =  this.props;
 		
 		return (
-			<div>
-			 	<input type='button' value={StringLocalisation('NEW_GAME', lang)} onClick={()=>{pagesActions.ChangeCurrentPage(PagesConstants.GAME_PAGE)}} />
-				<div>{StringLocalisation('CONTINUE_GAME', lang)}</div>
-				<input type='button' value={StringLocalisation('OPTIONS', lang)} onClick={()=>{pagesActions.ShowOptionsSection()}}/>
+			<div className="mode_container">
+				<div className="logo">{StringLocalisation('GAME_LOGO', lang)}</div>
+			 	<input className="play_btn" type='button' value={StringLocalisation('NEW_GAME', lang)} onClick={()=>{pagesActions.ChangeCurrentPage(PagesConstants.GAME_PAGE)}} />
+				<div style={{display: "none"}}>{StringLocalisation('CONTINUE_GAME', lang)}</div>
+				<i className="fa fa-cog options" onClick={()=>{pagesActions.ShowOptionsSection()}}></i>
 			</div>
 			);
 		

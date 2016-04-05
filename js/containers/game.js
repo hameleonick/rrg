@@ -63,16 +63,19 @@ class Game extends Component {
 		}
 
 		return (
-				<div>
-					{data.map((object, id)=>{
-						if(object.get("type") == "text"){
-							return <GameMessage lang={lang} key={id} text={object.get("value")} />
-						}
-						else{
-							return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.get("value")} />
-						}
-					})}
-									
+				<div className="game">
+					<div className="message">
+						<div className="message_item blue">
+						{data.map((object, id)=>{
+							if(object.get("type") == "text"){
+								return <GameMessage lang={lang} key={id} text={object.get("value")} />
+							}
+							else{
+								return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.get("value")} />
+							}
+						})}
+						</div>
+					</div>
 				</div>
 			)	
 

@@ -7,7 +7,7 @@ class ActionButtons extends Component {
     const {buttons, userAction, lang} = this.props;
     
     return (
-      <div>
+      <div className="buttons_wrapper">
         {buttons.map((button,id)=>{
         	return <input disabled={button.get("disabled")} key={id} onClick={()=>{userAction(button.get("value"))}} type="button" value={StringLocalisation(button.get("text"), lang)} />
     	    })
