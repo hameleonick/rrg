@@ -29,11 +29,12 @@ function changeCurrentGameState(actionData,state){
 // 		let currentData = state.get("data").last();
 // console.log(currentData)
 // 		let currentValue = currentData.get("value")
-// console.log(currentValue)
+// // console.log(currentValue)
+// 		let buttons = [];
 // 		currentValue.forEach((val,k)=>{ 
-// 			return val.withMutations((v)=> { v.set("disabled",true); console.log(v.get("disabled"))});
+// 			buttons.push(val.set('disabled',true));
 // 		})
-// 		console.log(currentValue)
+// 		console.log(buttons)
 
 // 		let temp = state.get("data").last().get("value").forEach((val,k)=>{ 
 // 	return val.withMutations((v)=> { v.set("disabled",true); console.log(v.get("disabled"))});
@@ -47,6 +48,7 @@ function changeCurrentGameState(actionData,state){
 		state.set("data", Immutable.fromJS(data));
 	});
 
+	updateLocalStorage(nextState);
 	return nextState;
 
 }
@@ -67,9 +69,9 @@ function updateTextState(actionData, state){
 	  	if(!state.get("gameFlows").get(areaStep))
 			state.setIn(["gameFlows",areaStep],Immutable.fromJS({textLength:0,possibleAction:action}));
 
-		state.set("waitingForAction", false);
 		let textLength = state.getIn(["gameFlows",areaStep,"textLength"]);
 		if(textLength != immutableGameModel.text.length){
+			state.set("waitingForAction", false);
 			state.setIn(["gameFlows",areaStep, 'textLength'], textLength+1); 
 			state.updateIn(["data"], data=>data.push(Immutable.fromJS({type:"text", value: immutableGameModel.text[textLength]})));	
 			
@@ -83,6 +85,7 @@ function updateTextState(actionData, state){
 		return state;
 	});
 
+	updateLocalStorage(nextState);
 	return nextState;
 
 }
@@ -107,10 +110,20 @@ function updateActionState(actionData, state){
 	}
 	
 	let nextState = state.withMutations((state) => {
-		state.set("waitingForAction", false);
+		// state.set("waitingForAction", false);
 		state.updateIn(["data"], data=>data.push(Immutable.fromJS({type:"action", value: actions})));	
 	});
 
+	updateLocalStorage(nextState);
 	return nextState;
+}
+
+function updateLocalStorage(nextState){
+	
+	localStorage.setItem("data", JSON.stringify(nextState.get("data").toJS()))
+	localStorage.setItem("gameFlows", JSON.stringify(nextState.get("gameFlows").toJS()))
+	localStorage.setItem("waitingForAction", nextState.get("waitingForAction"));
+	localStorage.setItem("currentGameState", JSON.stringify(nextState.get("currentGameState").toJS()));
+	localStorage.setItem("gameStarted", true);
 }
 

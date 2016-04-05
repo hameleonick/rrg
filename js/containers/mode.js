@@ -30,13 +30,15 @@ class Mode extends Component {
 }
 
 Mode.propTypes = {
-	lang: PropTypes.string
+	lang: PropTypes.string,
+	gameStarted:PropTypes.bool
 }
 
 function mapStateToProps(state, ownProps) {
 
   return {
-    lang: state.getIn(['options','currentLanguage'])
+    lang: state.getIn(['options','currentLanguage']),
+    gameStarted: state.getIn(['game','gameStarted'])
   }
 }
 
