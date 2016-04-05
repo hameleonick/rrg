@@ -10,7 +10,8 @@ export const initialState = Immutable.fromJS({
 	},
 	pages:{
 		currentPage: "MODE_PAGE",
-  		pages: []	
+  		pages: [],
+  		showOptionSection: false	
 	},
 	mode:{
 

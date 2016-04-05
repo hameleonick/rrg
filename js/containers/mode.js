@@ -15,13 +15,13 @@ class Mode extends Component {
 
 	render(){
 
-		const {pagesActions, lang} =  this.props;
+		const {pagesActions, lang, showOptionSection} =  this.props;
 		
 		return (
 			<div>
 			 	<input type='button' value={StringLocalisation('NEW_GAME', lang)} onClick={()=>{pagesActions.ChangeCurrentPage(PagesConstants.GAME_PAGE)}} />
 				<div>{StringLocalisation('CONTINUE_GAME', lang)}</div>
-				<input type='button' value={StringLocalisation('OPTIONS', lang)} onClick={()=>{pagesActions.ChangeCurrentPage(PagesConstants.OPTIONS_PAGE)}}/>
+				<input type='button' value={StringLocalisation('OPTIONS', lang)} onClick={()=>{pagesActions.ShowOptionsSection()}}/>
 			</div>
 			);
 		

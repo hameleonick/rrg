@@ -13,7 +13,7 @@ class App extends Component {
 
 		console.log(this.props)
 		if(this.props.currentPage == OPTIONS_PAGE)
-			return <Options />
+			return <Options  />
 		else if(this.props.currentPage == MODE_PAGE)
 			return <Mode />
 		else if(this.props.currentPage == GAME_PAGE)
@@ -24,12 +24,15 @@ class App extends Component {
 
 
 	render(){
-		const {currentPage} = this.props;
+		const {currentPage, showOptionSection} = this.props;
 		
+		const opt = showOptionSection ? <Options /> : null
+
 		return (
 
 				<div>
 					{this.returnCurrentPage()}
+					{opt}
 				  </div>
 			);
 	}
@@ -37,13 +40,15 @@ class App extends Component {
 
 App.propTypes = {
   currentPage: PropTypes.string,
-  pages: PropTypes.array
+  pages: PropTypes.array,
+  showOptionSection: PropTypes.bool
 }
 
 function mapStateToProps(state, ownProps) {
 
   return {
-    currentPage: state.getIn(['pages','currentPage'])
+    currentPage: state.getIn(['pages','currentPage']),
+    showOptionSection: state.getIn(['pages','showOptionSection'])
   }
 }
 

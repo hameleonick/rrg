@@ -6,3 +6,10 @@ export const ChangeCurrentPage = (value)=>{
 		value: value
 	}
 }
+
+export const ShowOptionsSection = (value)=>{
+	return {
+		type: page.SHOW_OPTIONS_SECTION,
+		value: value
+	}
+}

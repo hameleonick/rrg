@@ -26,6 +26,19 @@ function changeCurrentGameState(actionData,state){
 		state.setIn(['currentGameState','step'],actionData.get("step"));
 		state.setIn(['currentGameState','action'],actionData.get("action"));
 
+// 		let currentData = state.get("data").last();
+// console.log(currentData)
+// 		let currentValue = currentData.get("value")
+// console.log(currentValue)
+// 		currentValue.forEach((val,k)=>{ 
+// 			return val.withMutations((v)=> { v.set("disabled",true); console.log(v.get("disabled"))});
+// 		})
+// 		console.log(currentValue)
+
+// 		let temp = state.get("data").last().get("value").forEach((val,k)=>{ 
+// 	return val.withMutations((v)=> { v.set("disabled",true); console.log(v.get("disabled"))});
+// })
+
 		let data = state.get("data").toJS();
 		for(let i=0; i < data[data.length-1].value.length ;i++)
 		{
