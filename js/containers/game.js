@@ -16,17 +16,19 @@ class Game extends Component {
 	}
 
 	componentWillMount() {
-
-		this.showMessageTillNewAction(true);
+		
+		
 	}
 
 	componentDidMount() {
-
+		
+		if(!this.props.gameStarted || !this.props.waitingForAction)
+			this.showMessageTillNewAction();
 		 // this.showMessageTillNewAction();
 	}
 
 	componentWillReceiveProps(nextProps) {
-
+		
 	}
 
 	doAction(value){
@@ -96,7 +98,8 @@ function mapStateToProps(state, ownProps) {
   	fastModeTextDelay: state.getIn(['game','fastModeTextDelay']),
   	data: state.getIn(['game','data']),
   	waitingForAction: state.getIn(['game','waitingForAction']),
-  	lang: state.getIn(['options','currentLanguage'])
+  	lang: state.getIn(['options','currentLanguage']),
+  	gameStarted: state.getIn(['game','gameStarted'])
   }
 }
 

@@ -17,6 +17,7 @@ export const initialState = Immutable.fromJS({
 
 	},
 	game:{
+		gameStarted: false,
 		defaultTextDelay: "500",
 		fastModeTextDelay: "3000",
 		currentGameState:{area:0,step:0, action:0},
