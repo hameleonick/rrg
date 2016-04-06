@@ -7,6 +7,9 @@ import {StringLocalisation} from '../helpers'
 import GameMessage from "../components/gameMessage"
 import ActionButtons from "../components/actionButtons"
 import Immutable from "Immutable"
+import ReactIScroll from "react-iscroll"
+import iScroll from "iscroll"
+
 
 class Game extends Component {
 
@@ -18,6 +21,18 @@ class Game extends Component {
 	componentWillMount() {
 		
 		
+	}
+
+	onRefresh(iScrollInstance) {
+	  var yScroll = iScrollInstance.y;
+	 
+	  console.log("vertical position:" + yScroll)
+	 
+	  if(this.state.y != yScroll) {
+	    this.setState({y: yScroll})
+	  }
+
+	  iScrollInstance.scrollTo(0, iScrollInstance.maxScrollY, 500);
 	}
 
 	componentDidMount() {
@@ -63,21 +78,58 @@ class Game extends Component {
 		if(waitingForAction){
 			btn =  <input type="button" value="test" />
 		}
+let options =  {
+        mouseWheel: true,
+        scrollbars: true
+      }
+		let gameData = [];
+		let key = 0;
+		let flag = {text:false, action:false};
+		data.map((object, id)=>{
+			if(!gameData[key])
+				gameData[key] = [];
+			if(object.get("type") == "text"){
+				flag.text = true;
+				gameData[key].push(object)
+			}
+			else
+			{
+				flag.action = true;
+				gameData[key].push(object)
+			}
+
+			if(flag.action && flag.text){
+				key++;
+				flag.action = false;
+				flag.key = false;
+			}
+		});
 
 		return (
 				<div className="game">
+				<ReactIScroll iScroll={iScroll}
+                      options={options}
+                     onRefresh={this.onRefresh.bind(this)}>
 					<div className="message">
-						<div className="message_item blue">
-						{data.map((object, id)=>{
-							if(object.get("type") == "text"){
-								return <GameMessage lang={lang} key={id} text={object.get("value")} />
-							}
-							else{
-								return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.get("value")} />
-							}
+					
+						{gameData.map((messages, id)=>{
+							return (
+								<div key={id} className="message_item blue">
+									{messages.map((object, id)=>{
+										if(object.get("type") == "text"){
+											return <GameMessage lang={lang} key={id} text={object.get("value")} />
+										}
+										else{
+											return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.get("value")} />
+										}
+									})}
+
+								</div>
+							)				
 						})}
-						</div>
+						
 					</div>
+					</ReactIScroll>
 				</div>
 			)	
 

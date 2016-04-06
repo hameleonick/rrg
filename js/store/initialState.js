@@ -18,13 +18,16 @@ export const initialState = Immutable.fromJS({
 	},
 	game:{
 		gameStarted: false,
-		defaultTextDelay: "500",
-		fastModeTextDelay: "3000",
+		defaultTextDelay: "2000",
+		fastModeTextDelay: "1000",
 		currentGameState:{area:0,step:0, action:0},
 		waitingForAction: false,
+		currentDataSection:0,
 		data: [
+		// [
 			// {type:"text", value:""},
 			// {type:"action", value:}
+		// ]
 		],
 		gameFlows:{
 			// "0_0":{
