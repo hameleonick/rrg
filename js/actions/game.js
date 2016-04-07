@@ -15,8 +15,15 @@ export const GetActionButtons = (value)=>{
 }
 
 export const ChangeCurrentState = (value)=>{
-		return {
+	return {
 		type: game.CHANGE_CURRENT_STATE,
+		value: value
+	}
+}
+
+export const ResetGameProgress = (value)=> {
+	return {
+		type: game.RESET_GAME_PROGRESS,
 		value: value
 	}
 }

@@ -60,12 +60,10 @@ body, html {
     font-size: 32px;
     display: block;
 }
-.play_btn {
+
+.mode_btn {
     position: absolute;
-    bottom: 15%;
-    left: 50%;
-    margin-left: -72px;
-    width: 145px;
+    width: 165px;
     height: 45px;
     background: #ec652f;
     background: -moz-linear-gradient(top,  #ec652f 0%, #e1471c 100%);
@@ -76,7 +74,19 @@ body, html {
     border: none;
     color: #fff;
     font-size: 22px;
+    margin-left: -84px;
 }
+
+.play_btn {
+    bottom: 25%;
+    left: 50%;
+}
+
+.continue_btn {
+    bottom: 17%;
+    left: 50%;
+}
+
 .options_wrapper {
     position: absolute;
     background: rgba(0,0,0,0.5);

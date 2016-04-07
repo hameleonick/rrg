@@ -1,5 +1,5 @@
 import {GameModel} from "../store/gameModel"
-import {GET_NEXT_TEXT, GET_ACTION_BUTTONS, CHANGE_CURRENT_STATE} from '../constants/game'
+import {GET_NEXT_TEXT, GET_ACTION_BUTTONS, CHANGE_CURRENT_STATE, RESET_GAME_PROGRESS} from '../constants/game'
 import _ from "lodash"
 import Immutable from "Immutable"
 
@@ -11,6 +11,8 @@ export default function game(state = {}, action) {
  			return updateActionState(action.value, state);
  		case CHANGE_CURRENT_STATE:	
  			return changeCurrentGameState(action.value, state);
+ 		case RESET_GAME_PROGRESS:
+ 			return resetGameProgress(state);
 	    default:
 	      return state;//Object.assign({},state);
   	}
@@ -127,3 +129,21 @@ function updateLocalStorage(nextState){
 	localStorage.setItem("gameStarted", true);
 }
 
+function resetGameProgress(state){
+	console.log(111111111)
+	let nextState = state.withMutations((state) => {
+
+		let emptyData = Immutable.fromJS([]),emptyGameFlows = Immutable.fromJS({});
+		state.set("data",emptyData)
+			 .set("gameFlows",emptyGameFlows)
+			 .set("waitingForAction",false)
+			 .setIn(['currentGameState','area'],0)
+			 .setIn(['currentGameState','step'],0)
+			 .setIn(['currentGameState','action'],0)
+			 .set("gameStarted",false);
+	});
+
+	localStorage.clear();
+	return nextState;
+
+}
