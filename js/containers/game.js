@@ -79,8 +79,12 @@ class Game extends Component {
 			btn =  <input type="button" value="test" />
 		}
 let options =  {
+        scrollbars: true,
+        scrollbars: 'custom',
+        fadeScrollbars: true,
         mouseWheel: true,
-        scrollbars: true
+        bounce: false,
+        interactiveScrollbars: true
       }
 		let gameData = [];
 		let key = 0;

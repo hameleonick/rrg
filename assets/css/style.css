@@ -90,6 +90,7 @@ body, html {
     /*height: 100%;*/
     overflow: hidden;
     position: relative;
+    padding-bottom: 35px;
 
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
@@ -131,15 +132,17 @@ body, html {
     overflow: hidden;
 }
 .buttons_wrapper input[type="button"] {
-    height: 45px;
+    height: 47px;
     min-width: 47%;
-    max-width: 50%;
+    max-width: 49%;
     display: inline-block;
     border: none;
     box-sizing: border-box;
     font-size: 15px;
     word-wrap: break-word;
     white-space: pre-wrap;
+    -webkit-appearance:none;
+    border-radius: 0;
 }
 .message_item.green .buttons_wrapper input[type="button"] {
     background: #081D0C;
@@ -155,4 +158,22 @@ body, html {
 }
 .buttons_wrapper input[type="button"]:nth-child(2) {
     float: right;
+}
+.iScrollVerticalScrollbar {
+    position: absolute;
+    z-index: 9999;
+    width: 7px;
+    bottom: 2px;
+    top: 2px;
+    right: 1px;
+    overflow: hidden;
+}
+.iScrollIndicator {
+    box-sizing: border-box;
+    position: absolute;
+    border: none;
+    border-radius: 3px;
+    width: 100%;
+    display: block;
+    background: #00CDF4;
 }
