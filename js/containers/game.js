@@ -26,7 +26,7 @@ class Game extends Component {
 	onRefresh(iScrollInstance) {
 	  var yScroll = iScrollInstance.y;
 	 
-	  console.log("vertical position:" + yScroll)
+	  // console.log("vertical position:" + yScroll)
 	 
 	  if(this.state.y != yScroll) {
 	    this.setState({y: yScroll})
@@ -46,10 +46,15 @@ class Game extends Component {
 		
 	}
 
-	doAction(value){
+	moveForward(value){
 		let {actions, defaultTextDelay} = this.props;
 		actions.ChangeCurrentState(Immutable.fromJS({area:value.get(0), step:value.get(1), action:value.get(2)}));		
 		this.showMessageTillNewAction();
+	}
+
+	moveBack(value){
+		console.log(1111111);
+		console.log(value);
 	}
 
 	showMessageTillNewAction(firstTime = false) {
@@ -124,7 +129,7 @@ let options =  {
 											return <GameMessage lang={lang} key={id} text={object.get("value")} />
 										}
 										else{
-											return <ActionButtons lang={lang} userAction={this.doAction.bind(this)} key={id} buttons={object.get("value")} />
+											return <ActionButtons completed={object.get("completed")} lang={lang} moveBack={this.moveBack.bind(this)} moveForward={this.moveForward.bind(this)} key={id} buttons={object.get("value")} />
 										}
 									})}
 

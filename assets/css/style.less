@@ -1,0 +1,193 @@
+@import url("./reset.css");
+@import url("./font-awesome.css");
+
+@font-face {
+    font-family: 'Monofonto';
+    src: url('../fonts/monofonto.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body, html {
+    background: #2c2b29;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Monofonto', sans-serif;
+}
+.app, .wrapper, .game {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.game {
+    background: url("../img/game_bg.png") no-repeat center;
+    background-size: 100% 100%;
+}
+.mode_container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: url("../img/play_bg.png") no-repeat center;
+    background-size: 100% auto;
+}
+.logo {
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    font-family: "Comic Sans MS";
+    text-align: center;
+    font-size: 50px;
+    top: 50px;
+}
+.options {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    color: #fff;
+    font-size: 32px;
+    display: block;
+}
+
+.mode_btn {
+    position: absolute;
+    width: 165px;
+    height: 45px;
+    background: #ec652f;
+    background: -moz-linear-gradient(top,  #ec652f 0%, #e1471c 100%);
+    background: -webkit-linear-gradient(top,  #ec652f 0%,#e1471c 100%);
+    background: linear-gradient(to bottom,  #ec652f 0%,#e1471c 100%);
+    border-radius: 5px;
+    display: block;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    margin-left: -84px;
+}
+
+.play_btn {
+    bottom: 25%;
+    left: 50%;
+}
+
+.continue_btn {
+    bottom: 17%;
+    left: 50%;
+}
+
+.options_wrapper {
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #fff;
+}
+.message {
+    width: 100%;
+    /*height: 100%;*/
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 35px;
+
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
+
+}
+.message_item {
+    padding: 10px;
+    font-family: "Roboto";
+    margin: 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+.message_item.green {
+    color: #1AFF7E;
+    border: 2px solid #1AFF7E;
+}
+
+.message_item.blue {
+    color: #01C7ED;
+    border: 2px solid #00CDF4;
+}
+.buttons_wrapper {
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+    overflow: hidden;
+}
+.buttons_wrapper input[type="button"] {
+    height: 47px;
+    min-width: 47%;
+    max-width: 49%;
+    display: inline-block;
+    border: none;
+    box-sizing: border-box;
+    font-size: 15px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    -webkit-appearance:none;
+    border-radius: 0;
+}
+.message_item.green .buttons_wrapper input[type="button"] {
+    background: #081D0C;
+    color: #1AFF7E;
+}
+
+.message_item.blue .buttons_wrapper input[type="button"] {
+    background: #041822;
+    color: #01C7ED;
+
+    &.chosenAction {
+        background-color: green;
+    }
+}
+.buttons_wrapper input[type="button"]:nth-child(1) {
+    float: left;
+}
+.buttons_wrapper input[type="button"]:nth-child(2) {
+    float: right;
+}
+.iScrollVerticalScrollbar {
+    position: absolute;
+    z-index: 9999;
+    width: 7px;
+    bottom: 2px;
+    top: 2px;
+    right: 1px;
+    overflow: hidden;
+}
+.iScrollIndicator {
+    box-sizing: border-box;
+    position: absolute;
+    border: none;
+    border-radius: 3px;
+    width: 100%;
+    display: block;
+    background: #00CDF4;
+}

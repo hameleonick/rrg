@@ -1,5 +1,5 @@
 import {GameModel} from "../store/gameModel"
-import {GET_NEXT_TEXT, GET_ACTION_BUTTONS, CHANGE_CURRENT_STATE, RESET_GAME_PROGRESS} from '../constants/game'
+import {GET_NEXT_TEXT, GET_ACTION_BUTTONS, CHANGE_CURRENT_STATE, RESET_GAME_PROGRESS, RESTART_GAME_FROM_ACTION} from '../constants/game'
 import _ from "lodash"
 import Immutable from "Immutable"
 
@@ -13,6 +13,8 @@ export default function game(state = {}, action) {
  			return changeCurrentGameState(action.value, state);
  		case RESET_GAME_PROGRESS:
  			return resetGameProgress(state);
+ 		case RESTART_GAME_FROM_ACTION:
+ 			return restartGameFromAction(action.value, state);
 	    default:
 	      return state;//Object.assign({},state);
   	}
@@ -43,9 +45,16 @@ function changeCurrentGameState(actionData,state){
 // })
 
 		let data = state.get("data").toJS();
+		data[data.length-1].completed = true;
 		for(let i=0; i < data[data.length-1].value.length ;i++)
 		{
-			data[data.length-1].value[i].disabled = true;	
+			// data[data.length-1].value[i].disabled = true;	
+			if(data[data.length-1].value[i].value.join("_")==actionData.get("area")+"_"+actionData.get("step")+"_"+actionData.get("action")){
+				data[data.length-1].value[i].chosen = true;
+			}
+			else{
+				data[data.length-1].value[i].chosen = false;
+			}
 		}
 		state.set("data", Immutable.fromJS(data));
 	});
@@ -113,7 +122,7 @@ function updateActionState(actionData, state){
 	
 	let nextState = state.withMutations((state) => {
 		// state.set("waitingForAction", false);
-		state.updateIn(["data"], data=>data.push(Immutable.fromJS({type:"action", value: actions})));	
+		state.updateIn(["data"], data=>data.push(Immutable.fromJS({type:"action", completed:false, value: actions, gameFlows:state.get("gameFlows")})));	
 	});
 
 	updateLocalStorage(nextState);
@@ -130,7 +139,7 @@ function updateLocalStorage(nextState){
 }
 
 function resetGameProgress(state){
-	console.log(111111111)
+	
 	let nextState = state.withMutations((state) => {
 
 		let emptyData = Immutable.fromJS([]),emptyGameFlows = Immutable.fromJS({});
@@ -145,5 +154,9 @@ function resetGameProgress(state){
 
 	localStorage.clear();
 	return nextState;
+
+}
+
+function restartGameFromAction(actionData, state){
 
 }

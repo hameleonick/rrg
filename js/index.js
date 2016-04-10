@@ -6,9 +6,10 @@ import { createStore } from 'redux'
 import configureStore from './store/'
 import {initialState} from './store/initialState'
 import App from './containers/app'
+import "../assets/css/style.less"
 
 const store = configureStore(initialState)
-
+let b = 1;
 render(
   <Provider store={store}>
     <App/>

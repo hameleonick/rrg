@@ -22,9 +22,9 @@
     "react-dom": "^0.14.7",
     "react-redux": "^4.1.2",
     "redux": "^3.1.2",
-    "redux-immutablejs":"^0.0.8",
-    "react-iscroll":"^1.0.0",
-    "iscroll":"^5.2.0",
+    "redux-immutablejs": "^0.0.8",
+    "react-iscroll": "^1.0.0",
+    "iscroll": "^5.2.0",
     "immutable": "^3.7.6"
   },
   "devDependencies": {
@@ -35,15 +35,17 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-register": "^6.3.13",
     "cross-env": "^1.0.7",
+    "css-loader": "^0.23.1",
     "expect": "^1.8.0",
     "express": "^4.13.3",
     "jsdom": "^5.6.1",
+    "less-loader": "^2.2.3",
+    "lodash": "^4.8.2",
     "mocha": "^2.2.5",
     "node-libs-browser": "^0.5.2",
     "react-addons-test-utils": "^0.14.7",
     "webpack": "^1.9.11",
     "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.9.1",
-    "lodash":"^4.8.2"
+    "webpack-hot-middleware": "^2.9.1"
   }
 }

@@ -7,14 +7,14 @@ export const GetNextText = (value)=>{
 	}
 }
 
-export const GetActionButtons = (value)=>{
+export const GetActionButtons = (value)=> {
 	return {
 		type: game.GET_ACTION_BUTTONS,
 		value: value
 	}
 }
 
-export const ChangeCurrentState = (value)=>{
+export const ChangeCurrentState = (value)=> {
 	return {
 		type: game.CHANGE_CURRENT_STATE,
 		value: value
@@ -24,6 +24,13 @@ export const ChangeCurrentState = (value)=>{
 export const ResetGameProgress = (value)=> {
 	return {
 		type: game.RESET_GAME_PROGRESS,
+		value: value
+	}
+}
+
+export const RestartGameFromAction = (value)=> {
+	return {
+		type: game.RESTART_GAME_FROM_ACTION,
 		value: value
 	}
 }

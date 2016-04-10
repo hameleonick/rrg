@@ -1,4 +1,12 @@
 /node_modules
 /dist/*.js
 /dist/*.json
+/dist/*.ttf
+/dist/*.eot
+/dist/*.png
+/dist/*.woff
+/dist/*.woff2
+/dist/*.svg
+/dist/img/
+/dist/fonts/
 /.git
